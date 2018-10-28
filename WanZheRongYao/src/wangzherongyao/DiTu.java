@@ -1,6 +1,12 @@
 package wangzherongyao;
 
 import java.util.Scanner;
+
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import helloworld.Main;
 /**
  * 战场控制模块，包括战场初始化{@link DiTu()}，战场附着物初始化{@link DiTuChuShiHua()}，
  * 地图展示{@link print()}，英雄的移动{@link YiDong(int x,int y,String p)}等；
@@ -206,6 +212,9 @@ public class DiTu {
 	 * @param p 移动者
 	 */
 	void YiDong(int x,int y,String p) {
+		Logger logger = Logger.getLogger(Main.class);
+		BasicConfigurator.configure();
+		logger.setLevel(Level.INFO);
 		if(!ShiFouKeYiDong(x,y)||x<1||x>10||y<1||y>10) {
 			System.out.println(p+"移动失败");
 			return;
@@ -230,13 +239,13 @@ public class DiTu {
 		}
 		if(!O.ZhanKai(x,y,ditu[x][y])&&O.BiaoZhi) {
 			q.ShouShang(O.ShangHai());
-			System.out.println(q.name+"受到攻击，生命减少"+O.ShangHai());
+			logger.info(q.name+"受到攻击，生命减少"+O.ShangHai());
 			O.set(0, 0);
 			O.BiaoZhi=false;
 		}
 		if(!o.ZhanKai(x,y,ditu[x][y])&&o.BiaoZhi) {
 			q.ShouShang(o.ShangHai());
-			System.out.println(q.name+"受到攻击，生命减少"+o.ShangHai());
+			logger.info(q.name+"受到攻击，生命减少"+o.ShangHai());
 			o.set(0, 0);
 			o.BiaoZhi=false;
 		}
@@ -248,6 +257,9 @@ public class DiTu {
 	 * @param y 被攻击者
 	 */
 	void GongJi(String x,String y) {
+		Logger logger = Logger.getLogger(Main.class);
+		BasicConfigurator.configure();
+		logger.setLevel(Level.INFO);
 		JiChuYingXiong p=PiPei(x);
 		JiChuYingXiong q=PiPei(y);
 		if(p.ShiFouChengGong(q.x, q.y)) {
@@ -255,14 +267,16 @@ public class DiTu {
 				SheZhiDiTu2(l.x1,l.y1," ");
 				SheZhiDiTu2(l.x2,l.y2," ");
 				l.ShouHui();
-				System.out.println("c的盾牌抵消了攻击");
+				logger.info("c的盾牌抵消了攻击");
+				logger.info("c的生命值是"+q.ShengMing);
 				return;
 			}
 			if(q.name.equals("C")&&L.BiaoZhi) {
 				SheZhiDiTu2(L.x1,L.y1," ");
 				SheZhiDiTu2(L.x2,L.y2," ");
 				L.ShouHui();
-				System.out.println("C的盾牌抵消了攻击");
+				logger.info("C的盾牌抵消了攻击");
+				logger.info("C的生命值是"+q.ShengMing);
 				return;
 			}
 			q.ShouShang(p.GongJi());
@@ -278,13 +292,16 @@ public class DiTu {
 	 * @param p 释放者
 	 */
 	void JiNeng(String p) {
+		Logger logger = Logger.getLogger(Main.class);
+		BasicConfigurator.configure();
+		logger.setLevel(Level.INFO);
 		Scanner reader=new Scanner(System.in);
 		if(p.equals("B")){
 			System.out.println("输入技能释放位置：（int x，int y）");
 			int x=reader.nextInt();
 			int y=reader.nextInt();
 			O.set(x, y);
-			System.out.println("B释放了法阵");
+			logger.info("B释放了法阵");
 			if(O.ShiFouChengGong(B.x, B.y)) {
 				if(O.ZhanKai(x,y,ditu[x][y])) {
 					SheZhiDiTu(x,y,O.name);
@@ -293,18 +310,18 @@ public class DiTu {
 					if(O.BiaoZhi) {
 						JiChuYingXiong m=PiPei(ditu[x][y]);
 						m.ShouShang(O.ShangHai());
-						System.out.println(m.name+"受到攻击，生命减少"+O.ShangHai());
+						logger.info(m.name+"受到攻击，生命减少"+O.ShangHai());
 					}
 				}
 			}
-			else System.out.println(B.name+"技能释放失败,范围之外");
+			else logger.info(B.name+"技能释放失败,范围之外");
 		}
 		else if(p.equals("b")){
 			System.out.println("输入技能释放位置：（int x，int y）");
 			int x=reader.nextInt();
 			int y=reader.nextInt();
 			o.set(x, y);
-			System.out.println("b释放了法阵");
+			logger.info("b释放了法阵");
 			if(o.ShiFouChengGong(b.x, b.y)) {
 				if(o.ZhanKai(x,y,ditu[x][y])) {
 					SheZhiDiTu(x,y,o.name);
@@ -313,11 +330,11 @@ public class DiTu {
 					if(o.BiaoZhi) {
 						JiChuYingXiong m=PiPei(ditu[x][y]);
 						m.ShouShang(o.ShangHai());
-						System.out.println(m.name+"受到攻击，生命减少"+o.ShangHai());
+						logger.info(m.name+"受到攻击，生命减少"+o.ShangHai());
 					}
 				}
 			}
-			else System.out.println(b.name+"技能释放失败,范围之外");
+			else logger.info(b.name+"技能释放失败,范围之外");
 		}
 		else if(p.equals("d")) {
 			System.out.println("d拿起了弓箭");
@@ -514,18 +531,54 @@ public class DiTu {
 			System.out.println("分身消失了");
 		}
 		else if(p.equals("c")) {
-			System.out.println("C举起了盾牌");
+			logger.info("C举起了盾牌");
 			l.set(c.x, c.y);
 			SheZhiDiTu2(l.x1,l.y1,l.name);
 			SheZhiDiTu2(l.x2,l.y2,l.name);
 			l.ZhanKai();
 		}
 		else if(p.equals("C")) {
-			System.out.println("C举起了盾牌");
+			logger.info("C举起了盾牌");
 			L.set(C.x, C.y);
 			SheZhiDiTu2(L.x1,L.y1,L.name);
 			SheZhiDiTu2(L.x2,L.y2,L.name);
 			L.ZhanKai();
 		}
+	}
+}
+
+class Ta{
+	String name;
+	int x,y;
+	int GongJiFanWei;
+	/**
+	 * 防御塔的初始化
+	 * @param p 塔在地图上的字符化表示
+	 */
+	Ta(String p){
+		name=p;
+		x=5;
+		y=5;
+		GongJiFanWei=3;
+	}
+	/**
+	 * @return 防御塔的伤害
+	 */
+	int ShangHai() {
+		return 50;
+	}
+	/**
+	 *用于判定是否在防御塔的攻击范围之内
+	 * @param x 目标横坐标
+	 * @param y 目标纵坐标
+	 * @return 在，返回true，不在，返回false
+	 */
+	boolean ShiFouGongJi(int x,int y) {
+		int m=this.x-x;
+		if(m<0) m=-m;
+		int n=this.y-y;
+		if(n<0) n=-n;
+		if(m+n<=GongJiFanWei) return true;
+		else return false;
 	}
 }
