@@ -19,6 +19,7 @@ class FaZheng{
 	 * @param p
 	 */
 	FaZheng(String p){
+		BiaoZhi=false;
 		name=p;
 		ShiFangFanWei=3;
 	}
@@ -145,12 +146,12 @@ class FenShen{
 		else {
 			BiaoZhi=true;
 			if(name.equals("E")) {
-				if(p.equals("A")||p.equals("B")||p.equals("C")||p.equals("D")) {
+				if(p.equals("A")||p.equals("B")||p.equals("C")||p.equals("D")||p.equals("E")) {
 					BiaoZhi=false;
 				}
 			}
 			else {
-				if(p.equals("a")||p.equals("b")||p.equals("c")||p.equals("d")) {
+				if(p.equals("a")||p.equals("b")||p.equals("c")||p.equals("d")||p.equals("e")) {
 					BiaoZhi=false;
 				}
 			}

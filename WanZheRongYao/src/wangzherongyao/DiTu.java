@@ -6,7 +6,8 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import helloworld.Main;
+
+
 /**
  * 战场控制模块，包括战场初始化{@link DiTu()}，战场附着物初始化{@link DiTuChuShiHua()}，
  * 地图展示{@link print()}，英雄的移动{@link YiDong(int x,int y,String p)}等；
@@ -14,6 +15,7 @@ import helloworld.Main;
  *
  */
 public class DiTu {
+	boolean flag;
 	String ditu[][];
 	String ditu2[][];
 	JiChuYingXiong A,B,C,D,E,a,b,c,d,e;
@@ -21,11 +23,13 @@ public class DiTu {
 	Jian Z,z;
 	FenShen E1,e1;
 	Dun L,l;
+	private Scanner reader;
 	/**
 	 * 用于初始化战场
 	 */
 	DiTu()
 	{
+		flag=false;
 		ditu=new String [12][12];
 		ditu2=new String [12][12];
 		A=new ZhanShi("A",1,1);
@@ -47,6 +51,15 @@ public class DiTu {
 		L=new Dun("|");
 		l=new Dun("|");
 		DiTuChuShiHua();
+	}
+	boolean ShiFouJieShu() {
+		if(A.ShiFouSiWang()&&B.ShiFouSiWang()&&C.ShiFouSiWang()&&D.ShiFouSiWang()&&E.ShiFouSiWang()) {
+			flag=true;
+		}
+		else if(a.ShiFouSiWang()&&b.ShiFouSiWang()&&c.ShiFouSiWang()&&d.ShiFouSiWang()&&e.ShiFouSiWang()) {
+			flag=true;
+		}
+		return flag;
 	}
 	void DiTuChuShiHua() {
 		for(int i=0;i<12;i++) {
@@ -87,6 +100,7 @@ public class DiTu {
 	 * @param p 设置内容
 	 */
 	void SheZhiDiTu(int x,int y,String p) {
+		if(x<1||x>10||y<1||y>10) return;
 		ditu[x][y]=p;
 	}
 	void SheZhiDiTu2(int x,int y,String p) {
@@ -95,7 +109,7 @@ public class DiTu {
 	/**
 	 * 用于输出地图；
 	 */
-	void print()
+	synchronized void print()
 	{
 		for(int i=0;i<12;i++) {
 			for(int j=0;j<12;j++) {
@@ -104,7 +118,7 @@ public class DiTu {
 			System.out.println();
 		}
 	}
-	void print1()
+	synchronized void print1()
 	{
 		for(int i=0;i<12;i++) {
 			for(int j=0;j<12;j++) {
@@ -114,7 +128,7 @@ public class DiTu {
 		}
 		System.out.println();
 	}
-	void print2() {
+	synchronized void print2() {
 		System.out.println("name ShengMing");
 		A.print();
 		B.print();
@@ -128,7 +142,7 @@ public class DiTu {
 		e.print();
 	}
 	JiChuYingXiong PiPei(String p) {
-		JiChuYingXiong q=new JiChuYingXiong();
+		JiChuYingXiong q=null;
 		switch(p) {
 		case "A": q=A;break;
 		case "a": q=a;break;
@@ -145,61 +159,62 @@ public class DiTu {
 	}
 	/**
 	 * 用于清楚战场上已经被击败的英雄
+	 * @return 
 	 */
-	void ChuLiShiTi() {
+	synchronized void ChuLiShiTi() {
 		if(A.ShiFouSiWang()) {
-			SheZhiDiTu(A.x,A.y,"X");
-			print1();
 			SheZhiDiTu(A.x,A.y," ");
+			A.set(15, 15);
+			System.out.println("A已经死亡");
 		}
 		if(B.ShiFouSiWang()) {
-			SheZhiDiTu(B.x,B.y,"X");
-			print1();
 			SheZhiDiTu(B.x,B.y," ");
+			B.set(15, 15);
+			System.out.println("B已经死亡");
 
 		}
 		if(C.ShiFouSiWang()) {
-			SheZhiDiTu(C.x,C.y,"X");
-			print1();
 			SheZhiDiTu(C.x,C.y," ");
+			C.set(15, 15);
+			System.out.println("C已经死亡");
 		}
 		if(D.ShiFouSiWang()) {
-			SheZhiDiTu(D.x,D.y,"X");
-			print1();
 			SheZhiDiTu(D.x,D.y," ");
+			D.set(15, 15);
+			System.out.println("D已经死亡");
 		}
 		if(E.ShiFouSiWang()) {
-			SheZhiDiTu(E.x,E.y,"X");
-			print1();
 			SheZhiDiTu(E.x,E.y," ");
+			E.set(15, 15);
+			System.out.println("E已经死亡");
 		}
 		if(a.ShiFouSiWang()) {
-			SheZhiDiTu(a.x,a.y,"X");
-			print1();
 			SheZhiDiTu(a.x,a.y," ");
+			a.set(15, 15);
+			System.out.println("a已经死亡");
 		}
 		if(b.ShiFouSiWang()) {
-			SheZhiDiTu(b.x,b.y,"X");
-			print1();
 			SheZhiDiTu(b.x,b.y," ");
+			b.set(15, 15);
+			System.out.println("b已经死亡");
 		}
 		if(c.ShiFouSiWang()) {
-			SheZhiDiTu(c.x,c.y,"X");
-			print1();
 			SheZhiDiTu(c.x,c.y," ");
+			c.set(15, 15);
+			System.out.println("c已经死亡");
 		}
 		if(d.ShiFouSiWang()) {
-			SheZhiDiTu(d.x,d.y,"X");
-			print1();
 			SheZhiDiTu(d.x,d.y," ");
+			d.set(15, 15);
+			System.out.println("d已经死亡");
 		}
 		if(e.ShiFouSiWang()) {
-			SheZhiDiTu(e.x,e.y,"X");
-			print1();
 			SheZhiDiTu(e.x,e.y," ");
+			e.set(15, 15);
+			System.out.println("e已经死亡");
 		}
 	}
-	boolean ShiFouKeYiDong(int x,int y) {
+	synchronized boolean ShiFouKeYiDong(int x,int y) {
 		if(ditu[x][y].equals(" ")||ditu[x][y].equals("O")||ditu[x][y].equals("o")) {
 			return true;
 		}
@@ -211,10 +226,11 @@ public class DiTu {
 	 * @param y 纵坐标
 	 * @param p 移动者
 	 */
-	void YiDong(int x,int y,String p) {
+	synchronized void YiDong(int x,int y,String p) {
 		Logger logger = Logger.getLogger(Main.class);
 		BasicConfigurator.configure();
 		logger.setLevel(Level.INFO);
+		logger.info("移动者信息 "+p+" "+x+" "+y);
 		if(!ShiFouKeYiDong(x,y)||x<1||x>10||y<1||y>10) {
 			System.out.println(p+"移动失败");
 			return;
@@ -238,14 +254,15 @@ public class DiTu {
 			SheZhiDiTu2(L.x2,L.y2,L.name);
 		}
 		if(!O.ZhanKai(x,y,ditu[x][y])&&O.BiaoZhi) {
+			logger.info("法阵信息 "+O.name+" "+O.x+" "+O.y);
 			q.ShouShang(O.ShangHai());
-			logger.info(q.name+"受到攻击，生命减少"+O.ShangHai());
+			System.out.println(q.name+"受到法阵O的攻击，生命减少"+O.ShangHai());
 			O.set(0, 0);
 			O.BiaoZhi=false;
 		}
 		if(!o.ZhanKai(x,y,ditu[x][y])&&o.BiaoZhi) {
 			q.ShouShang(o.ShangHai());
-			logger.info(q.name+"受到攻击，生命减少"+o.ShangHai());
+			System.out.println(q.name+"受到法阵o的攻击，生命减少"+o.ShangHai());
 			o.set(0, 0);
 			o.BiaoZhi=false;
 		}
@@ -256,10 +273,7 @@ public class DiTu {
 	 * @param x 攻击者
 	 * @param y 被攻击者
 	 */
-	void GongJi(String x,String y) {
-		Logger logger = Logger.getLogger(Main.class);
-		BasicConfigurator.configure();
-		logger.setLevel(Level.INFO);
+	synchronized void GongJi(String x,String y) {
 		JiChuYingXiong p=PiPei(x);
 		JiChuYingXiong q=PiPei(y);
 		if(p.ShiFouChengGong(q.x, q.y)) {
@@ -267,20 +281,20 @@ public class DiTu {
 				SheZhiDiTu2(l.x1,l.y1," ");
 				SheZhiDiTu2(l.x2,l.y2," ");
 				l.ShouHui();
-				logger.info("c的盾牌抵消了攻击");
-				logger.info("c的生命值是"+q.ShengMing);
+				System.out.println("c的盾牌抵消了攻击");
+				System.out.println("c的生命值是"+q.ShengMing);
 				return;
 			}
 			if(q.name.equals("C")&&L.BiaoZhi) {
 				SheZhiDiTu2(L.x1,L.y1," ");
 				SheZhiDiTu2(L.x2,L.y2," ");
 				L.ShouHui();
-				logger.info("C的盾牌抵消了攻击");
-				logger.info("C的生命值是"+q.ShengMing);
+				System.out.println("C的盾牌抵消了攻击");
+				System.out.println("C的生命值是"+q.ShengMing);
 				return;
 			}
 			q.ShouShang(p.GongJi());
-			System.out.println(q.name+"受到攻击，生命减少"+p.GongJi());
+			System.out.println(q.name+"受到"+p.name+"的普通攻击，生命减少"+p.GongJi());
 		}
 		else {
 			System.out.println(x+"攻击"+y+"失败,攻击范围之外");
@@ -291,259 +305,352 @@ public class DiTu {
 	 * 不同的英雄会释放不同的技能，需要区别释放者的英雄类别；
 	 * @param p 释放者
 	 */
-	void JiNeng(String p) {
-		Logger logger = Logger.getLogger(Main.class);
-		BasicConfigurator.configure();
-		logger.setLevel(Level.INFO);
-		Scanner reader=new Scanner(System.in);
+	synchronized void JiNeng(String p) {
+		reader = new Scanner(System.in);
 		if(p.equals("B")){
-			System.out.println("输入技能释放位置：（int x，int y）");
-			int x=reader.nextInt();
-			int y=reader.nextInt();
-			O.set(x, y);
-			logger.info("B释放了法阵");
-			if(O.ShiFouChengGong(B.x, B.y)) {
-				if(O.ZhanKai(x,y,ditu[x][y])) {
-					SheZhiDiTu(x,y,O.name);
-				}
-				else {
-					if(O.BiaoZhi) {
-						JiChuYingXiong m=PiPei(ditu[x][y]);
-						m.ShouShang(O.ShangHai());
-						logger.info(m.name+"受到攻击，生命减少"+O.ShangHai());
-					}
-				}
-			}
-			else logger.info(B.name+"技能释放失败,范围之外");
+			JiNengB();
 		}
 		else if(p.equals("b")){
-			System.out.println("输入技能释放位置：（int x，int y）");
-			int x=reader.nextInt();
-			int y=reader.nextInt();
-			o.set(x, y);
-			logger.info("b释放了法阵");
-			if(o.ShiFouChengGong(b.x, b.y)) {
-				if(o.ZhanKai(x,y,ditu[x][y])) {
-					SheZhiDiTu(x,y,o.name);
-				}
-				else {
-					if(o.BiaoZhi) {
-						JiChuYingXiong m=PiPei(ditu[x][y]);
-						m.ShouShang(o.ShangHai());
-						logger.info(m.name+"受到攻击，生命减少"+o.ShangHai());
-					}
-				}
-			}
-			else logger.info(b.name+"技能释放失败,范围之外");
+			JiNengb();
 		}
 		else if(p.equals("d")) {
-			System.out.println("d拿起了弓箭");
-			System.out.println("输入技能释放方向：（w，s，a，d）");
-			String s=reader.nextLine();
-			int x=d.x,y=d.y;
-			if(s.equals("w")) {
-				System.out.println("向w方向射了一箭");
-				z.set("|");
-				z.set(x-1, y);
-				while(z.QianJin(ditu[--x][y])) {
-					SheZhiDiTu(x,y,z.name);
-					print1();
-					SheZhiDiTu(x,y," ");
-				}
-				if(!ditu[x][y].equals("*")) {
-					JiChuYingXiong m=PiPei(ditu[x][y]);
-					m.ShouShang(z.ShangHai());
-					System.out.println(m.name+"受到攻击，生命减少"+z.ShangHai());
-				}
-				else System.out.println("没有命中");
-			}
-			else if(s.equals("s")) {
-				System.out.println("向s方向射了一箭");
-				z.set("|");
-				z.set(x+1, y);
-				while(z.QianJin(ditu[++x][y])) {
-					SheZhiDiTu(x,y,z.name);
-					print1();
-					SheZhiDiTu(x,y," ");
-				}
-				if(!ditu[x][y].equals("*")) {
-					JiChuYingXiong m=PiPei(ditu[x][y]);
-					m.ShouShang(z.ShangHai());
-					System.out.println(m.name+"受到攻击，生命减少"+z.ShangHai());
-				}
-				else System.out.println("没有命中");
-			}
-			else if(s.equals("a")) {
-				System.out.println("向a方向射了一箭");
-				z.set("-");
-				z.set(x, y-1);
-				while(z.QianJin(ditu[x][--y])) {
-					SheZhiDiTu(x,y,z.name);
-					print1();
-					SheZhiDiTu(x,y," ");
-				}
-				if(!ditu[x][y].equals("*")) {
-					JiChuYingXiong m=PiPei(ditu[x][y]);
-					m.ShouShang(z.ShangHai());
-					System.out.println(m.name+"受到攻击，生命减少"+z.ShangHai());
-				}
-				else System.out.println("没有命中");
-			}
-			else if(s.equals("d")) {
-				System.out.println("向d方向射了一箭");
-				z.set("-");
-				z.set(x, y+1);
-				while(z.QianJin(ditu[x][++y])) {
-					SheZhiDiTu(x,y,z.name);
-					print1();
-					SheZhiDiTu(x,y," ");
-				}
-				if(!ditu[x][y].equals("*")) {
-					JiChuYingXiong m=PiPei(ditu[x][y]);
-					m.ShouShang(z.ShangHai());
-					System.out.println(m.name+"受到攻击，生命减少"+z.ShangHai());
-				}
-				else System.out.println("没有命中");
-			}
+			JiNengd();
 		}
 		else if(p.equals("D")) {
-			System.out.println("D拿起了弓箭");
-			System.out.println("输入技能释放方向：（w，s，a，d）");
-			String s=reader.nextLine();
-			int x=D.x,y=D.y;
-			if(s.equals("w")) {
-				System.out.println("向w方向射了一箭");
-				Z.set("|");
-				Z.set(x-1, y);
-				while(Z.QianJin(ditu[--x][y])) {
-					SheZhiDiTu(x,y,Z.name);
-					print1();
-					SheZhiDiTu(x,y," ");
-				}
-				if(!ditu[x][y].equals("*")) {
-					JiChuYingXiong m=PiPei(ditu[x][y]);
-					m.ShouShang(Z.ShangHai());
-					System.out.println(m.name+"受到攻击，生命减少"+Z.ShangHai());
-				}
-				else System.out.println("没有命中");
-			}
-			else if(s.equals("s")) {
-				System.out.println("向s方向射了一箭");
-				Z.set("|");
-				Z.set(x+1, y);
-				while(Z.QianJin(ditu[++x][y])) {
-					SheZhiDiTu(x,y,Z.name);
-					print1();
-					SheZhiDiTu(x,y," ");
-				}
-				if(!ditu[x][y].equals("*")) {
-					JiChuYingXiong m=PiPei(ditu[x][y]);
-					m.ShouShang(Z.ShangHai());
-					System.out.println(m.name+"受到攻击，生命减少"+Z.ShangHai());
-				}
-				else System.out.println("没有命中");
-			}
-			else if(s.equals("a")) {
-				System.out.println("向a方向射了一箭");
-				Z.set("-");
-				Z.set(x, y-1);
-				while(Z.QianJin(ditu[x][--y])) {
-					SheZhiDiTu(x,y,Z.name);
-					print1();
-					SheZhiDiTu(x,y," ");
-				}
-				if(!ditu[x][y].equals("*")) {
-					JiChuYingXiong m=PiPei(ditu[x][y]);
-					m.ShouShang(Z.ShangHai());
-					System.out.println(m.name+"受到攻击，生命减少"+Z.ShangHai());
-				}
-				else System.out.println("没有命中");
-			}
-			else if(s.equals("d")) {
-				System.out.println("向d方向射了一箭");
-				Z.set("-");
-				Z.set(x, y+1);
-				while(Z.QianJin(ditu[x][++y])) {
-					SheZhiDiTu(x,y,Z.name);
-					print1();
-					SheZhiDiTu(x,y," ");
-				}
-				if(!ditu[x][y].equals("*")) {
-					JiChuYingXiong m=PiPei(ditu[x][y]);
-					m.ShouShang(Z.ShangHai());
-					System.out.println(m.name+"受到攻击，生命减少"+Z.ShangHai());
-				}
-				else System.out.println("没有命中");
-			}
+			JiNengD();
 		}
 		else if(p.equals("E")) {
-			System.out.println("输入技能攻击位置：（int x，int y）");
-			int x=reader.nextInt();
-			int y=reader.nextInt();
-			E1.set(E.x, E.y);
-			String m=ditu2[E1.x][E1.y];
-			SheZhiDiTu2(E1.x,E1.y,E1.name);
-			System.out.println("E发动了分身术");
-			print1();
-			SheZhiDiTu2(E1.x,E1.y,m);
-			E1.set(x, y);
-			m=ditu2[E1.x][E1.y];
-			SheZhiDiTu2(E1.x,E1.y,E1.name);
-			print1();
-			if(E1.GongJi(ditu[x][y])) {
-				if(E1.BiaoZhi) {
-					JiChuYingXiong n=PiPei(ditu[x][y]);
-					n.ShouShang(E1.ShangHai());
-					System.out.println(n.name+"受到攻击，生命减少"+E1.ShangHai());
-				}
-			}
-			else {
-				System.out.println("没有攻击目标");
-			}
-			SheZhiDiTu2(E1.x,E1.y,m);
-			System.out.println("分身消失了");
+			JiNengE();
 		}
 		else if(p.equals("e")) {
-			System.out.println("输入技能攻击位置：（int x，int y）");
-			int x=reader.nextInt();
-			int y=reader.nextInt();
-			e1.set(e.x, e.y);
-			String m=ditu2[e1.x][e1.y];
-			SheZhiDiTu2(e1.x,e1.y,e1.name);
-			System.out.println("e发动了分身术");
-			print1();
-			SheZhiDiTu2(e1.x,e1.y,m);
-			e1.set(x, y);
-			m=ditu2[e1.x][e1.y];
-			SheZhiDiTu2(e1.x,e1.y,e1.name);
-			print1();
-			if(e1.GongJi(ditu[x][y])) {
-				if(e1.BiaoZhi) {
-					JiChuYingXiong n=PiPei(ditu[x][y]);
-					n.ShouShang(e1.ShangHai());
-					System.out.println(n.name+"受到攻击，生命减少"+e1.ShangHai());
-				}
-			}
-			else {
-				System.out.println("没有攻击目标");
-			}
-			SheZhiDiTu2(e1.x,e1.y,m);
-			System.out.println("分身消失了");
+			JiNenge();
 		}
 		else if(p.equals("c")) {
-			logger.info("C举起了盾牌");
-			l.set(c.x, c.y);
-			SheZhiDiTu2(l.x1,l.y1,l.name);
-			SheZhiDiTu2(l.x2,l.y2,l.name);
-			l.ZhanKai();
+			JiNengc();
 		}
 		else if(p.equals("C")) {
-			logger.info("C举起了盾牌");
-			L.set(C.x, C.y);
-			SheZhiDiTu2(L.x1,L.y1,L.name);
-			SheZhiDiTu2(L.x2,L.y2,L.name);
-			L.ZhanKai();
+			JiNengC();
 		}
+	}
+	synchronized void JiNengb() {
+		System.out.println("b法阵释放位置：（int x，int y）");
+		int x=reader.nextInt();
+		int y=reader.nextInt();
+		o.set(x, y);
+		
+		System.out.println("b召唤了法阵");
+		if(o.ShiFouChengGong(b.x, b.y)) {
+			if(o.ZhanKai(x,y,ditu[x][y])) {
+				SheZhiDiTu(x,y,o.name);
+				System.out.println("b召唤的法阵出现了");
+				o.BiaoZhi=false;
+			}
+			else {
+				if(o.BiaoZhi) {
+					JiChuYingXiong m=PiPei(ditu[x][y]);
+					if(m==null) {
+						System.out.println("b召唤法阵失败");
+						o.set(15, 15);
+						o.BiaoZhi=false;
+						return;
+					}
+					m.ShouShang(o.ShangHai());
+					System.out.println(m.name+"受到b的法阵攻击，生命减少"+o.ShangHai());
+				}
+			}
+		}
+		else {
+			System.out.println(b.name+"技能释放失败,范围之外");
+			o.set(15, 15);
+		}
+	}
+	synchronized void JiNengB() {
+		System.out.println("B法阵释放位置：（int x，int y）");
+		int x=(int)(Math.random()*10);
+		int y=(int)(Math.random()*10);
+		//int x=reader.nextInt();
+		//int y=reader.nextInt();
+		System.out.println(x+"  "+y);
+		O.set(x, y);
+		
+		System.out.println("B召唤了法阵");
+		if(O.ShiFouChengGong(B.x, B.y)) {
+			if(O.ZhanKai(x,y,ditu[x][y])) {
+				SheZhiDiTu(x,y,O.name);
+				System.out.println("B召唤的法阵出现了");
+				O.BiaoZhi=false;
+			}
+			else {
+				if(O.BiaoZhi) {
+					JiChuYingXiong m=PiPei(ditu[x][y]);
+					if(m==null) {
+						System.out.println("B召唤法阵失败");
+						O.set(15, 15);
+						O.BiaoZhi=false;
+						return;
+					}
+					m.ShouShang(O.ShangHai());
+					System.out.println(m.name+"受到B的法阵攻击，生命减少"+O.ShangHai());
+				}
+			}
+		}
+		else {
+			System.out.println(B.name+"技能释放失败,范围之外");
+			O.set(15, 15);
+		}
+	}
+	synchronized void JiNengd() {
+		System.out.println("d拿起了弓箭");
+		System.out.println("输入d射箭方向：（w，s，a，d）");
+		String s=reader.nextLine();
+		int x=d.x,y=d.y;
+		if(s.equals("w")) {
+			System.out.println("d向w方向射了一箭");
+			z.set("|");
+			z.set(x-1, y);
+			while(z.QianJin(ditu[--x][y])) {
+				SheZhiDiTu(x,y,z.name);
+				print1();
+				SheZhiDiTu(x,y," ");
+			}
+			if(!ditu[x][y].equals("*")) {
+				JiChuYingXiong m=PiPei(ditu[x][y]);
+				if(m==null) {
+					System.out.println("d射出的箭没有命中");
+					return;
+				}
+				m.ShouShang(z.ShangHai());
+				System.out.println(m.name+"被d射中了，生命减少"+z.ShangHai());
+			}
+			else System.out.println("d射出的箭没有命中");
+		}
+		else if(s.equals("s")) {
+			System.out.println("d向s方向射了一箭");
+			z.set("|");
+			z.set(x+1, y);
+			while(z.QianJin(ditu[++x][y])) {
+				SheZhiDiTu(x,y,z.name);
+				print1();
+				SheZhiDiTu(x,y," ");
+			}
+			if(!ditu[x][y].equals("*")) {
+				JiChuYingXiong m=PiPei(ditu[x][y]);
+				if(m==null) {
+					System.out.println("d射出的箭没有命中");
+					return;
+				}
+				m.ShouShang(z.ShangHai());
+				System.out.println(m.name+"被d射中了，生命减少"+z.ShangHai());
+			}
+			else System.out.println("d射出的箭没有命中");
+		}
+		else if(s.equals("a")) {
+			System.out.println("d向a方向射了一箭");
+			z.set("-");
+			z.set(x, y-1);
+			while(z.QianJin(ditu[x][--y])) {
+				SheZhiDiTu(x,y,z.name);
+				print1();
+				SheZhiDiTu(x,y," ");
+			}
+			if(!ditu[x][y].equals("*")) {
+				JiChuYingXiong m=PiPei(ditu[x][y]);
+				if(m==null) {
+					System.out.println("d射出的箭没有命中");
+					return;
+				}
+				m.ShouShang(z.ShangHai());
+				System.out.println(m.name+"被d射中了，生命减少"+z.ShangHai());
+			}
+			else System.out.println("d射出的箭没有命中");
+		}
+		else if(s.equals("d")) {
+			System.out.println("d向d方向射了一箭");
+			z.set("-");
+			z.set(x, y+1);
+			while(z.QianJin(ditu[x][++y])) {
+				SheZhiDiTu(x,y,z.name);
+				print1();
+				SheZhiDiTu(x,y," ");
+			}
+			if(!ditu[x][y].equals("*")) {
+				JiChuYingXiong m=PiPei(ditu[x][y]);
+				if(m==null) {
+					System.out.println("d射出的箭没有命中");
+					return;
+				}
+				m.ShouShang(z.ShangHai());
+				System.out.println(m.name+"被d射中了，生命减少"+z.ShangHai());
+			}
+			else System.out.println("d射出的箭没有命中");
+		}
+	}
+	synchronized void JiNengD() {
+		System.out.println("D拿起了弓箭");
+		String s=null;
+		int t=(int)(Math.random()*10);
+		if(t<3) s="w";
+		else if(t<=5) s="s";
+		else if(t<8) s="a";
+		else if(t<=10) s="d";
+		int x=D.x,y=D.y;
+		if(s.equals("w")) {
+			System.out.println("D向w方向射了一箭");
+			Z.set("|");
+			Z.set(x-1, y);
+			while(Z.QianJin(ditu[--x][y])) {
+				SheZhiDiTu(x,y,Z.name);
+				print1();
+				SheZhiDiTu(x,y," ");
+			}
+			if(!ditu[x][y].equals("*")) {
+				JiChuYingXiong m=PiPei(ditu[x][y]);
+				if(m==null) {
+					System.out.println("D射出的箭没有命中");
+					return;
+				}
+				m.ShouShang(Z.ShangHai());
+				System.out.println(m.name+"被D射中了，生命减少"+Z.ShangHai());
+			}
+			else System.out.println("D射出的箭没有命中");
+		}
+		else if(s.equals("s")) {
+			System.out.println("D向s方向射了一箭");
+			Z.set("|");
+			Z.set(x+1, y);
+			while(Z.QianJin(ditu[++x][y])) {
+				SheZhiDiTu(x,y,Z.name);
+				print1();
+				SheZhiDiTu(x,y," ");
+			}
+			if(!ditu[x][y].equals("*")) {
+				JiChuYingXiong m=PiPei(ditu[x][y]);
+				if(m==null) {
+					System.out.println("D射出的箭没有命中");
+					return;
+				}
+				m.ShouShang(Z.ShangHai());
+				System.out.println(m.name+"被D射中了，生命减少"+Z.ShangHai());
+			}
+			else System.out.println("D射出的箭没有命中");
+		}
+		else if(s.equals("a")) {
+			System.out.println("D向a方向射了一箭");
+			Z.set("-");
+			Z.set(x, y-1);
+			while(Z.QianJin(ditu[x][--y])) {
+				SheZhiDiTu(x,y,Z.name);
+				print1();
+				SheZhiDiTu(x,y," ");
+			}
+			if(!ditu[x][y].equals("*")) {
+				JiChuYingXiong m=PiPei(ditu[x][y]);
+				if(m==null) {
+					System.out.println("D射出的箭没有命中");
+					return;
+				}
+				m.ShouShang(Z.ShangHai());
+				System.out.println(m.name+"被D射中了，生命减少"+Z.ShangHai());
+			}
+			else System.out.println("D射出的箭没有命中");
+		}
+		else if(s.equals("d")) {
+			System.out.println("D向d方向射了一箭");
+			Z.set("-");
+			Z.set(x, y+1);
+			while(Z.QianJin(ditu[x][++y])) {
+				SheZhiDiTu(x,y,Z.name);
+				print1();
+				SheZhiDiTu(x,y," ");
+			}
+			if(!ditu[x][y].equals("*")) {
+				JiChuYingXiong m=PiPei(ditu[x][y]);
+				if(m==null) {
+					System.out.println("D射出的箭没有命中");
+					return;
+				}
+				m.ShouShang(Z.ShangHai());
+				System.out.println(m.name+"被D射中了，生命减少"+Z.ShangHai());
+			}
+			else System.out.println("D射出的箭没有命中");
+		}
+	}
+	synchronized void JiNenge() {
+		System.out.println("输入e分身攻击位置：（int x，int y）");
+		int x=reader.nextInt();
+		int y=reader.nextInt();
+		e1.set(e.x, e.y);
+		String m=ditu2[e1.x][e1.y];
+		SheZhiDiTu2(e1.x,e1.y,e1.name);
+		System.out.println("e发动了分身术");
+		print1();
+		SheZhiDiTu2(e1.x,e1.y,m);
+		e1.set(x, y);
+		m=ditu2[e1.x][e1.y];
+		SheZhiDiTu2(e1.x,e1.y,e1.name);
+		print1();
+		if(e1.GongJi(ditu[x][y])) {
+			if(e1.BiaoZhi) {
+				JiChuYingXiong n=PiPei(ditu[x][y]);
+				if(n==null) {
+					System.out.println("e的分身没有攻击目标");
+					return;
+				}
+				n.ShouShang(e1.ShangHai());
+				System.out.println(n.name+"受到e的分身攻击，生命减少"+e1.ShangHai());
+			}
+		}
+		else {
+			System.out.println("e的分身没有攻击目标");
+		}
+		SheZhiDiTu2(e1.x,e1.y,m);
+		System.out.println("e的分身消失了");
+	}
+	synchronized void JiNengE() {
+		System.out.println("E分身攻击位置：（int x，int y）");
+		int x=(int)(Math.random()*10);
+		int y=(int)(Math.random()*10);
+		System.out.println(x+"  "+y);
+		E1.set(E.x, E.y);
+		String m=ditu2[E1.x][E1.y];
+		SheZhiDiTu2(E1.x,E1.y,E1.name);
+		System.out.println("E发动了分身术");
+		print1();
+		SheZhiDiTu2(E1.x,E1.y,m);
+		E1.set(x, y);
+		m=ditu2[E1.x][E1.y];
+		SheZhiDiTu2(E1.x,E1.y,E1.name);
+		print1();
+		if(E1.GongJi(ditu[x][y])) {
+			if(E1.BiaoZhi) {
+				JiChuYingXiong n=PiPei(ditu[x][y]);
+				if(n==null) {
+					System.out.println("E的分身没有攻击目标");
+					return;
+				}
+				n.ShouShang(E1.ShangHai());
+				System.out.println(n.name+"受到E的分身攻击，生命减少"+E1.ShangHai());
+			}
+		}
+		else {
+			System.out.println("E的分身没有攻击目标");
+		}
+		SheZhiDiTu2(E1.x,E1.y,m);
+		System.out.println("E的分身消失了");
+	}
+	synchronized void JiNengc() {
+		System.out.println("c举起了盾牌");
+		l.set(c.x, c.y);
+		SheZhiDiTu2(l.x1,l.y1,l.name);
+		SheZhiDiTu2(l.x2,l.y2,l.name);
+		l.ZhanKai();
+	}
+	synchronized void JiNengC() {
+		System.out.println("C举起了盾牌");
+		L.set(C.x, C.y);
+		SheZhiDiTu2(L.x1,L.y1,L.name);
+		SheZhiDiTu2(L.x2,L.y2,L.name);
+		L.ZhanKai();
 	}
 }
 
