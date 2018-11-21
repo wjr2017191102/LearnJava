@@ -11,13 +11,10 @@ import java.util.Scanner;
  * @author Dell
  */
 public class Main {
-	private static Scanner reader;
-
 	public static void main(String args[]) {
 		DiTu a=new DiTu();
 		a.print();
 		a.print2();
-		File fname=new File("D:/h/hhh.txt");
 		JiQiCaoZuoA a1=new JiQiCaoZuoA(a);
 		JiQiCaoZuoB b1=new JiQiCaoZuoB(a);
 		JiQiCaoZuoC c1=new JiQiCaoZuoC(a);
@@ -39,16 +36,6 @@ public class Main {
 		t5.start();
 		t6.start();
 		t7.start();
-		/*synchronized(a) {
-			try {
-				FileInputStream fIn=new FileInputStream(fname);
-				Reader read=new InputStreamReader(fIn);
-		 
-			read.close();
-			}
-		catch(IOException e) {
-			
-		}*/
 	}
 }
 

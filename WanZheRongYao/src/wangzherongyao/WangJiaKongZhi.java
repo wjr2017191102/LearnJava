@@ -5,7 +5,7 @@ import java.util.Scanner;
  * 该类用于玩家的指令输入
  * @author Dell
  */
-class WangJiaKongZhi implements Runnable{
+public class WangJiaKongZhi implements Runnable{
 	DiTu a;
 	private Scanner reader;
 	public WangJiaKongZhi(DiTu a){
