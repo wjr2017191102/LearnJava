@@ -13,6 +13,7 @@ public class WangJiaKongZhi implements Runnable{
 	}
 	/**
 	 * 该run（）方法用于玩家指令的输入
+	 * 修改为读取文件中的内容并按文件中的指令作为输入
 	 */
 	public synchronized void run() {
 		reader = new Scanner(System.in);
@@ -27,8 +28,8 @@ public class WangJiaKongZhi implements Runnable{
 		int x=reader.nextInt();
 		int y=reader.nextInt();
 		System.out.println(x+" "+y);
-		a.YiDong(x, y, p);
-		a.print();
+		YiDong w=new YiDong(x,y,p,a);
+		w.run();
 	}
 	else if(CaoZuo.equals("3")) {
 		System.out.println("输入攻击者：");
@@ -37,14 +38,12 @@ public class WangJiaKongZhi implements Runnable{
 		String y=reader.nextLine();
 		a.GongJi(x, y);
 		a.ChuLiShiTi();
-		a.print();
 	}
 	else if(CaoZuo.equals("2")) {
 		System.out.println("输入技能释放者");
 		String p=reader.nextLine();
 		a.JiNeng(p);
 		a.ChuLiShiTi();
-		a.print();
 	}
 	else if(CaoZuo.equals("4")) {
 		a.print2();

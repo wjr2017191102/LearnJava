@@ -37,19 +37,20 @@ public class JiQiCaoZuoA implements Runnable{
 			if(IfGongJi()!=" ") {
 				if(Math.random()<=0.8) {
 					a.GongJi("A", IfGongJi());
-					a.ChuLiShiTi();
 				}
 				else {
 					x=(int)(Math.random()*10);
 					y=(int)(Math.random()*10);
-					a.YiDong(x, y, "A");
+					YiDong w=new YiDong(x,y,"A",a);
+					w.run();
 				}
 			}
 			else {
 				x=(int)(Math.random()*10);
 				y=(int)(Math.random()*10);
 				if(Math.random()<=0.5) {
-					a.YiDong(x, y, "A");
+					YiDong w=new YiDong(x,y,"A",a);
+					w.run();
 				}
 				else {
 					a.JiNeng("A");
@@ -57,7 +58,7 @@ public class JiQiCaoZuoA implements Runnable{
 				}
 			}
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(250);
 			}
 			catch(InterruptedException e) {
 			

@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class DiTu {
 	boolean flag;
-	String ditu[][];
+	public String ditu[][];
 	String ditu2[][];
 	JiChuYingXiong A,B,C,D,E,a,b,c,d,e;
 	FaZheng O,o;
@@ -158,7 +158,7 @@ public class DiTu {
 		return q;
 	}
 	/**
-	 * 用于清楚战场上已经被击败的英雄
+	 * 用于清除战场上已经被击败的英雄
 	 * @return 
 	 */
 	synchronized void ChuLiShiTi() {
@@ -207,6 +207,10 @@ public class DiTu {
 			SheZhiDiTu(d.x,d.y," ");
 			d.set(15, 15);
 			System.out.println("d已经死亡");
+			//d.ShengMing=100;
+			FuHuod p=new FuHuod(this);
+			Thread tp=new Thread(p);
+			tp.start();
 		}
 		if(e.ShiFouSiWang()) {
 			SheZhiDiTu(e.x,e.y," ");
@@ -214,6 +218,12 @@ public class DiTu {
 			System.out.println("e已经死亡");
 		}
 	}
+	/**
+	 * 用于判断移动目标位置是否合法
+	 * @param x 横坐标
+	 * @param y 纵坐标
+	 * @return 合法，返回true；不合法，返回false
+	 */
 	synchronized boolean ShiFouKeYiDong(int x,int y) {
 		if(ditu[x][y].equals(" ")||ditu[x][y].equals("O")||ditu[x][y].equals("o")) {
 			return true;
@@ -274,31 +284,10 @@ public class DiTu {
 	 * @param y 被攻击者
 	 */
 	synchronized void GongJi(String x,String y) {
-		JiChuYingXiong p=PiPei(x);
-		JiChuYingXiong q=PiPei(y);
-		if(p.ShiFouChengGong(q.x, q.y)) {
-			if(q.name.equals("c")&&l.BiaoZhi) {
-				SheZhiDiTu2(l.x1,l.y1," ");
-				SheZhiDiTu2(l.x2,l.y2," ");
-				l.ShouHui();
-				System.out.println("c的盾牌抵消了攻击");
-				System.out.println("c的生命值是"+q.ShengMing);
-				return;
-			}
-			if(q.name.equals("C")&&L.BiaoZhi) {
-				SheZhiDiTu2(L.x1,L.y1," ");
-				SheZhiDiTu2(L.x2,L.y2," ");
-				L.ShouHui();
-				System.out.println("C的盾牌抵消了攻击");
-				System.out.println("C的生命值是"+q.ShengMing);
-				return;
-			}
-			q.ShouShang(p.GongJi());
-			System.out.println(q.name+"受到"+p.name+"的普通攻击，生命减少"+p.GongJi());
-		}
-		else {
-			System.out.println(x+"攻击"+y+"失败,攻击范围之外");
-		}
+		GongJi gj=new GongJi(this,x,y);
+		Thread tgj=new Thread(gj);
+		tgj.start();
+		this.ChuLiShiTi();
 	}
 	/**
 	 * 用于控制战场上英雄的技能的释放；
