@@ -13,6 +13,7 @@ class FaZheng{
 	String name;
 	int ShiFangFanWei;
 	int x,y;
+	int ShangHai;
 	boolean BiaoZhi;
 	/**
 	 * 阵法初始化
@@ -22,6 +23,7 @@ class FaZheng{
 		BiaoZhi=false;
 		name=p;
 		ShiFangFanWei=3;
+		ShangHai=50;
 	}
 	/**
 	 * 阵法位置的设置
@@ -84,7 +86,7 @@ class FaZheng{
 	 * @return 造成的伤害
 	 */
 	int ShangHai() {
-		return 50;
+		return ShangHai;
 	}
 }
 

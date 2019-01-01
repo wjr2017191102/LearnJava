@@ -131,9 +131,9 @@ class FaShi extends JiChuYingXiong implements JiChuJiNeng{
 		FaLi=100;
 		JingYan=0;
 		GongJi=10;
-		FangYu=50;
+		//FangYu=50;
 		GongJiFanWei=2;
-		DengJi=1;
+		//DengJi=1;
 	}
 	public int GongJi() {
 		return GongJi;

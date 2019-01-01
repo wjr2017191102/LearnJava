@@ -17,7 +17,7 @@ public class DiTuDaYing implements Runnable{
 		this.p1=p1;
 	}
 	/**
-	 * 地图打印的循环条件是游戏还没结束，打印频率是10000毫秒
+	 * 地图打印的循环条件是游戏还没结束，打印频率是5毫秒
 	 */
 	public synchronized void run() {
 		while(!a.ShiFouJieShu()) {
@@ -25,10 +25,6 @@ public class DiTuDaYing implements Runnable{
 			for(int i=0;i<12;i++) {
 				for(int j=0;j<12;j++) {
 					p.label[i][j].setIcon(p.ChuangZhao(a.ditu[i][j]));
-					/*if(a.ditu[i][j].equals("A")) {
-						p.label[i][j].setIcon(p.ChuangZhao(a.ditu[i][j]));
-					}
-					else p.label[i][j].setText(a.ditu[i][j]);*/
 				}
 			}
 			p1.label[0].setText("A的生命值: "+a.A.ShengMing);

@@ -5,6 +5,8 @@ package wangzherongyao;
  * 简易智能处理如下：
  * 攻击范围内有敌人，一定概率普通攻击，一定概率逃跑；
  * 攻击范围内没有敌人，一定概率释放技能，一定概率移动；
+ * 
+ * 修改为读取文件操作战士英雄A。文件来自客户端发送的数据报
  * @author Dell
  *
  */
@@ -13,11 +15,16 @@ public class JiQiCaoZuoA implements Runnable{
 	public JiQiCaoZuoA(DiTu a){
 		this.a=a;
 	}
+	public void run() {
+		WangJiaKongZhi t=new WangJiaKongZhi(a);
+		Thread XianChen=new Thread(t);
+		XianChen.start();
+	}
 	/**
 	 * 用于判定攻击范围内是否有敌人
 	 * @return 有，攻击范围内的敌人；没有，单空格字符串
 	 */
-	String IfGongJi() {
+	/*String IfGongJi() {
 		String p[]= {"a","b","c","d","e"};
 		for(int i=0;i<5;i++) {
 			int x=a.PiPei(p[i]).x;
@@ -31,7 +38,7 @@ public class JiQiCaoZuoA implements Runnable{
 	/**
 	 * 线程主体内的循环的循环条件为战士英雄A没有死亡且游戏没有结束
 	 */
-	public  void run() {
+	/*public  void run() {
 		while(!a.A.ShiFouSiWang()&&!a.ShiFouJieShu()) {
 			int x,y;
 			if(IfGongJi()!=" ") {
@@ -64,5 +71,5 @@ public class JiQiCaoZuoA implements Runnable{
 			
 			}
 		}
-	}
+	}*/
 }
